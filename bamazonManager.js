@@ -14,7 +14,7 @@ var connection = mysql.createConnection({
 // Confirm connection
 connection.connect(function(err){
 	if(err) throw err;
-	console.log("Connected as: " + connection.threadId + '\n');
+	console.log("Connected as Id: " + connection.threadId + '\n');
 })
 
 // Function to show all items in database
@@ -38,7 +38,7 @@ function viewLowInventory(){
 	connection.query('SELECT * FROM products WHERE stock_quantity < 5', function(err, res){
 		if(err) throw err;
 		for(var key in res){
-			console.log("The following items have low stock quantities: ");
+			console.log("The following items have less than 5 units in stock: ");
 			console.log();
 			console.log("Item Id: " + res[key].item_id);
 			console.log("Product Name: " + res[key].product_name);
@@ -104,7 +104,8 @@ function anotherTransaction(){
 
 // The main menu of the program
 function mainMenu(){
-
+	console.log("Welcome to the Bamazon Manager Main Menu.");
+	console.log();
 	inquirer.prompt([
 	{
 		type: 'list',
