@@ -1,0 +1,15 @@
+{
+  "name": "bamazon-manager",
+  "version": "1.0.0",
+  "description": "Amazon-lite shopping cart",
+  "main": "bamazonManager.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Eric Williams",
+  "license": "ISC",
+  "dependencies": {
+    "inquirer": "^3.1.1",
+    "mysql": "^2.13.0"
+  }
+}
