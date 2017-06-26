@@ -21,7 +21,7 @@ connection.connect(function(err){
 function viewProducts(){
 	connection.query('SELECT * FROM products', function(err, res){
 		if(err) throw err;
-		console.log("Here is a list of all item in stock: ");
+		console.log("Here is a list of all items in stock: ");
 		console.log();
 		for(var key in res){
 			console.log("Item Id: " + res[key].item_id);
