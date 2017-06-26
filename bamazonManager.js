@@ -21,6 +21,8 @@ connection.connect(function(err){
 function viewProducts(){
 	connection.query('SELECT * FROM products', function(err, res){
 		if(err) throw err;
+		console.log("Here is a list of all item in stock: ");
+		console.log();
 		for(var key in res){
 			console.log("Item Id: " + res[key].item_id);
 			console.log("Product Name: " + res[key].product_name);
@@ -36,6 +38,8 @@ function viewLowInventory(){
 	connection.query('SELECT * FROM products WHERE stock_quantity < 5', function(err, res){
 		if(err) throw err;
 		for(var key in res){
+			console.log("The following items have low stock quantities: ");
+			console.log();
 			console.log("Item Id: " + res[key].item_id);
 			console.log("Product Name: " + res[key].product_name);
 			console.log("Price: " + res[key].price);
@@ -49,6 +53,15 @@ function viewLowInventory(){
 function addToInventory(moreOf, moreTo){
 	connection.query('UPDATE products SET stock_quantity = stock_quantity + ' + moreOf + ' WHERE item_id = ' + moreTo, function(err, res){
 		if(err) throw err;
+		if(moreOf == 1){
+			console.log("Added " + moreOf + " unit to item # " + moreTo);
+			console.log();
+		}
+		else{
+			console.log("Added " + moreOf + " units to item # " + moreTo);
+			console.log();
+		}
+		
 	})
 }
 
@@ -57,11 +70,37 @@ function addNewItem(deptName, itemId, newItem, newPrice, newItemQuant){
 	var post = {department_name:deptName, item_id:itemId, product_name:newItem, price: newPrice, stock_quantity: newItemQuant};
 	connection.query('INSERT INTO products SET ?' , post, function(err, res){
 		if(err) throw err;
+		console.log();
+		console.log(newItem + " was successfully added to the database.");
+		console.log();
 	})
 }
 
 // To ensure connection confirmation function plays first
 setTimeout(mainMenu, 2000);
+
+function anotherTransaction(){
+	inquirer.prompt([
+	{
+		type: 'confirm',
+		name: 'more',
+		message: "Would you like to make another transaction?"
+	}
+		]).then(function(response){
+			// console.log(response.more);
+			// console.log();
+			if(response.more == true){
+				console.log('Returning to main menu...');
+				console.log();
+				mainMenu();
+			}
+			else{
+				console.log('Thank you. Have a nice day.');
+				console.log();
+				connection.destroy();
+			}
+		})
+}
 
 // The main menu of the program
 function mainMenu(){
@@ -78,10 +117,12 @@ function mainMenu(){
 			if(response.mainMenu == 'View Products for Sale'){
 				console.log("View Products");
 				viewProducts();
+				setTimeout(anotherTransaction, 2000);
 			}
 			else if(response.mainMenu == 'View Low Inventory'){
 				console.log("View Low Inventory");
 				viewLowInventory();	
+				setTimeout(anotherTransaction, 2000);
 			}
 			else if(response.mainMenu == 'Add to Inventory'){
 				console.log("Add to Inventory");
@@ -98,7 +139,7 @@ function mainMenu(){
 						var moreOf = reply.moreOf;
 						var moreTo = reply.moreTo;
 						addToInventory(moreOf, moreTo);
-						connection.destroy();
+						setTimeout(anotherTransaction, 2000);
 					})
 			}
 			else if(response.mainMenu == 'Add New Product'){
@@ -131,7 +172,7 @@ function mainMenu(){
 						var newPrice = updating.newPrice;
 						var newItemQuant = updating.newItemQuant;
 						addNewItem(deptName, itemId, newItem, newPrice, newItemQuant);
-						connection.destroy();
+						setTimeout(anotherTransaction, 2000);
 					})
 			}
 		})
