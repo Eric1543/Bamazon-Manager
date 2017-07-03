@@ -1,4 +1,4 @@
-This is a program that allows a manager of bamazon read and write access to the products mysql database.
+This is a program that allows a manager of bamazon read and write access to the products database in mysql.
 
 Here are screenshots of a linear progression through the bamazonManager.js program, beginning with the main menu screen, 
 which permits 4 choices to the user - View All Products, View Low Inventory, Add to Item, and Add New Item.
